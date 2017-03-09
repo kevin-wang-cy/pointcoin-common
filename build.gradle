@@ -5,24 +5,23 @@ description = 'pointcoin common library'
 
 buildscript {
     ext {
-        springBootVersion = '1.4.3.RELEASE'
+
     }
     repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}") 
+       // mavenCentral()
+        maven {
+            url "${nexusUrl}/repository/maven-public"
+        }
     }
 }
 
 
 repositories {
-    mavenCentral()
+    maven {
+        url "${nexusUrl}/repository/maven-public/"
+    }
 }
     
-task wrapper(type: Wrapper) {
-    gradleVersion = '3.2.1'
-}
 
 
 apply plugin: 'java'
@@ -30,6 +29,8 @@ apply plugin: 'java'
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
+
+apply plugin: 'maven'
 
 apply plugin: 'idea'
 
@@ -39,4 +40,21 @@ eclipse {
     project {
         name = "${project.name}"
     }
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: "${nexusUrl}/repository/maven-releases/") {
+                authentication(userName: nexusUsername, password: nexusPassword)
+            }
+            snapshotRepository(url: "${nexusUrl}/repository/maven-snapshots/") {
+                authentication(userName: nexusUsername, password: nexusPassword)
+            }
+        }
+    }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '3.2.1'
 }

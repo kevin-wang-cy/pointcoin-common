@@ -11,11 +11,12 @@
       <entry name="!?*.java" />
       <entry name="!?*.groovy" />
     </wildcardResourcePatterns>
-    <bytecodeTargetLevel target="1.8" />
+    <bytecodeTargetLevel target="1.8">
+      <module name="pointcoin-common_main" target="1.8" />
+      <module name="pointcoin-common_test" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
-  <component name="CopyrightManager" default="">
-    <module2copyright />
-  </component>
+  <component name="CopyrightManager" default="" />
   <component name="DependencyValidationManager">
     <option name="SKIP_IMPORT_STATEMENTS" value="false" />
   </component>
@@ -27,6 +28,11 @@
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="gradleHome" value="$USER_HOME$/.sdkman/candidates/gradle/current" />
         <option name="gradleJvm" value="1.8" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$" />
+          </set>
+        </option>
       </GradleProjectSettings>
     </option>
   </component>
@@ -62,7 +68,9 @@
   </component>
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/pointcoin-common.iml" filepath="$PROJECT_DIR$/.idea/modules/pointcoin-common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/pointcoin-common.iml" filepath="$PROJECT_DIR$/pointcoin-common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/pointcoin-common_main.iml" filepath="$PROJECT_DIR$/.idea/modules/pointcoin-common_main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/pointcoin-common_test.iml" filepath="$PROJECT_DIR$/.idea/modules/pointcoin-common_test.iml" />
     </modules>
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" project-jdk-name="1.8" project-jdk-type="JavaSDK">
