@@ -5,24 +5,15 @@ description = 'pointcoin common library'
 
 buildscript {
     ext {
-
     }
     repositories {
-       // mavenCentral()
         maven {
-            url "${nexusUrl}/repository/maven-public"
+            url "${nexusPublicUrl}"
         }
     }
-}
-
-
-repositories {
-    maven {
-        url "${nexusUrl}/repository/maven-public/"
+    dependencies {
     }
 }
-    
-
 
 apply plugin: 'java'
 
@@ -32,8 +23,14 @@ targetCompatibility = 1.8
 
 apply plugin: 'maven'
 
-apply plugin: 'idea'
+repositories {
+    maven {
+        url "${nexusPublicUrl}"
+    }
+}
+    
 
+apply plugin: 'idea'
 apply plugin: 'eclipse'
     
 eclipse {
@@ -42,19 +39,19 @@ eclipse {
     }
 }
 
+task wrapper(type: Wrapper) {
+    gradleVersion = '3.3'
+}
+
 uploadArchives {
     repositories {
         mavenDeployer {
-            repository(url: "${nexusUrl}/repository/maven-releases/") {
+            repository(url: "${nexusReleaseUrl}") {
                 authentication(userName: nexusUsername, password: nexusPassword)
             }
-            snapshotRepository(url: "${nexusUrl}/repository/maven-snapshots/") {
+            snapshotRepository(url: "${nexusSnapshotUrl}") {
                 authentication(userName: nexusUsername, password: nexusPassword)
             }
         }
     }
-}
-
-task wrapper(type: Wrapper) {
-    gradleVersion = '3.2.1'
 }
