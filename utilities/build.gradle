@@ -1,0 +1,9 @@
+description = 'pointcoin common utilities'
+
+ext {
+}
+
+dependencies {
+}
+
+

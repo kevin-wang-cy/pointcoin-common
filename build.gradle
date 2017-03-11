@@ -1,57 +1,70 @@
-group = 'com.upbchain.pointcoin'
-version = '1.0-SNAPSHOT'
-
-description = 'pointcoin common library'
-
 buildscript {
     ext {
+
     }
     repositories {
         maven {
             url "${nexusPublicUrl}"
         }
     }
+
     dependencies {
+        //
     }
 }
 
-apply plugin: 'java'
+allprojects {
+    group = 'com.upbchain.pointcoin'
+    version = '1.0-SNAPSHOT'
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+    apply plugin: 'idea'
+    apply plugin: 'maven'
 
-
-apply plugin: 'maven'
-
-repositories {
-    maven {
-        url "${nexusPublicUrl}"
-    }
-}
-    
-
-apply plugin: 'idea'
-apply plugin: 'eclipse'
-    
-eclipse {
-    project {
-        name = "${project.name}"
-    }
-}
-
-task wrapper(type: Wrapper) {
-    gradleVersion = '3.3'
-}
-
-uploadArchives {
     repositories {
-        mavenDeployer {
-            repository(url: "${nexusReleaseUrl}") {
-                authentication(userName: nexusUsername, password: nexusPassword)
+        maven {
+            url "${nexusPublicUrl}"
+        }
+    }
+
+    task wrapper(type: Wrapper) {
+        gradleVersion = '3.3'
+    }
+
+    uploadArchives {
+        repositories {
+            mavenDeployer {
+                repository(url: "${nexusReleaseUrl}") {
+                    authentication(userName: nexusUsername, password: nexusPassword)
+                }
+                snapshotRepository(url: "${nexusSnapshotUrl}") {
+                    authentication(userName: nexusUsername, password: nexusPassword)
+                }
             }
-            snapshotRepository(url: "${nexusSnapshotUrl}") {
-                authentication(userName: nexusUsername, password: nexusPassword)
-            }
+        }
+    }
+}
+
+
+description = 'pointcoin common library'
+
+
+subprojects {
+    archivesBaseName = "${rootProject.name}-${project.name}"
+
+    ext {
+
+    }
+    apply plugin: 'java'
+    apply plugin: 'maven'
+    apply plugin: 'idea'
+    apply plugin: 'eclipse'
+
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+
+    eclipse {
+        project {
+            name = "${rootProject.name}-${project.name}"
         }
     }
 }
