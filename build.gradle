@@ -15,10 +15,9 @@ buildscript {
 
 allprojects {
     group = 'com.upbchain.pointcoin'
-    version = '1.0-SNAPSHOT'
+    version = project.properties.containsKey("releaseVersion") ? "${releaseVersion}" : "1.0-SNAPSHOT"
 
     apply plugin: 'idea'
-    apply plugin: 'maven'
 
     repositories {
         maven {
@@ -27,20 +26,7 @@ allprojects {
     }
 
     task wrapper(type: Wrapper) {
-        gradleVersion = '3.3'
-    }
-
-    uploadArchives {
-        repositories {
-            mavenDeployer {
-                repository(url: "${nexusReleaseUrl}") {
-                    authentication(userName: nexusUsername, password: nexusPassword)
-                }
-                snapshotRepository(url: "${nexusSnapshotUrl}") {
-                    authentication(userName: nexusUsername, password: nexusPassword)
-                }
-            }
-        }
+        gradleVersion = '3.4.1'
     }
 }
 
@@ -49,22 +35,53 @@ description = 'pointcoin common library'
 
 
 subprojects {
-    archivesBaseName = "${rootProject.name}-${project.name}"
-
     ext {
+        archivesBaseName = "${rootProject.name}-${project.name}"
 
+        nexusRepoUrl = project.properties.containsKey("releaseVersion") ? "${nexusReleaseUrl}" : "${nexusSnapshotUrl}"
+
+        slf4jVersion = "1.7.22"
+        junitVersion = "4.12"
+        mockitoVersion="2.+"
     }
-    apply plugin: 'java'
-    apply plugin: 'maven'
-    apply plugin: 'idea'
-    apply plugin: 'eclipse'
 
+    apply plugin: 'java'
     sourceCompatibility = 1.8
     targetCompatibility = 1.8
 
+    jar {
+        baseName "${project.archivesBaseName}"
+    }
+
+    apply plugin: 'eclipse'
     eclipse {
         project {
             name = "${rootProject.name}-${project.name}"
         }
+    }
+
+    apply plugin: 'maven-publish'
+
+    publishing {
+        publications {
+            mavenJava(MavenPublication) {
+                groupId "${project.group}"
+                artifactId "${rootProject.name}-${project.name}"
+                from components.java
+            }
+        }
+        repositories {
+            maven {
+                credentials {
+                    username "${nexusUsername}"
+                    password "${nexusPassword}"
+                }
+                url "${nexusRepoUrl}"
+            }
+        }
+    }
+
+    publish {
+        dependsOn assemble
     }
 }
