@@ -4,6 +4,13 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.file.FileSystem;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.security.KeyStore;
+
 import static org.junit.Assert.*;
 
 /**
@@ -95,6 +102,38 @@ public class KeyToolTest {
             assertNotNull(signedMessage);
             assertFalse(xupkeyTool.verifyMessage(plainText,  signedMessage, "wallet-default-test"));
         }
+
+
     }
 
+
+    @Test
+    public void importAndPersistentTest() throws Exception {
+        InputStream certIO = KeyToolTest.class.getResourceAsStream("/com/upbchain/pointcoin/common/security/wallet-zhuhai-test.cert");
+
+        assertTrue(xupkeyTool.importX509Cert(certIO, "imported-wallet-zhuhai-test"));
+
+        String plainText = "any message here";
+        String signedMessage = walletKeyTool.signMessage(plainText, "wallet-zhuhai-test", "wallletkeypass");
+
+        assertTrue(xupkeyTool.verifyMessage(plainText,  signedMessage, "imported-wallet-zhuhai-test"));
+
+        Path tmpFile = Files.createTempFile("xx-", "-xx");
+
+        try (OutputStream tmpIO = Files.newOutputStream(tmpFile)) {
+            assertTrue(xupkeyTool.persistent(tmpIO, "tmpstorepass"));
+        }
+
+        KeyTool tmpxupkeytool = KeyTool.newInstance(Files.newInputStream(tmpFile), "tmpstorepass");
+
+        assertNotNull(tmpxupkeytool);
+
+        assertTrue(tmpxupkeytool.verifyMessage(plainText,  signedMessage, "imported-wallet-zhuhai-test"));
+
+        signedMessage = tmpxupkeytool.signMessage(plainText, "xup-default-test", "xupkeypass");
+        System.out.println(signedMessage);
+        assertNotNull(signedMessage);
+        assertEquals(344, signedMessage.length());
+        assertTrue(walletKeyTool.verifyMessage(plainText,  signedMessage, "xup-default-test"));
+    }
 }
