@@ -5,6 +5,7 @@ ext {
 
 dependencies {
     compile("org.slf4j:slf4j-api:${slf4jVersion}")
+    compile group: 'javax.validation', name: 'validation-api', version: "${javaxvalidationVersion}"
 
     testCompile("junit:junit:${junitVersion}")
     testCompile("org.mockito:mockito-core:${mockitoVersion}")

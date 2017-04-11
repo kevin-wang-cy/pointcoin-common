@@ -43,6 +43,7 @@ subprojects {
         slf4jVersion = "1.7.22"
         junitVersion = "4.12"
         mockitoVersion="2.+"
+        javaxvalidationVersion="1.1.0.Final"
     }
 
     apply plugin: 'java'
