@@ -53,7 +53,7 @@ public class KeyTool {
 
             signature.update(plainText.getBytes("UTF-8"));
 
-            return Base64.getEncoder().encodeToString(signature.sign());
+            return Base64.getUrlEncoder().withoutPadding().encodeToString(signature.sign());
 
         } catch (KeyStoreException | NoSuchAlgorithmException | UnrecoverableKeyException | InvalidKeyException | UnsupportedEncodingException | SignatureException | NullPointerException ex) {
             LOG.error("Unable to sign message", ex);
@@ -72,7 +72,7 @@ public class KeyTool {
 
             signature.update(plainText.getBytes("UTF-8"));
 
-            byte[] signedBytes = Base64.getDecoder().decode(signedMessage);
+            byte[] signedBytes = Base64.getUrlDecoder().decode(signedMessage);
 
             return signature.verify(signedBytes);
 

@@ -66,19 +66,16 @@ public class KeyToolTest {
             signedMessage = walletKeyTool.signMessage(plainText, "wallet-default-test", "wallletkeypass");
             System.out.println(signedMessage);
             assertNotNull(signedMessage);
-            assertEquals(344, signedMessage.length());
             assertTrue(xupkeyTool.verifyMessage(plainText,  signedMessage, "wallet-default-test"));
 
             signedMessage = walletKeyTool.signMessage(plainText, "wallet-ec-test", "wallletkeypass");
             System.out.println(signedMessage);
             assertNotNull(signedMessage);
-            assertEquals(96, signedMessage.length());
             assertTrue(xupkeyTool.verifyMessage(plainText,  signedMessage, "wallet-ec-test"));
 
             signedMessage = xupkeyTool.signMessage(plainText, "xup-default-test", "xupkeypass");
             System.out.println(signedMessage);
             assertNotNull(signedMessage);
-            assertEquals(344, signedMessage.length());
             assertTrue(walletKeyTool.verifyMessage(plainText,  signedMessage, "xup-default-test"));
 
             // no private key for signing
@@ -133,7 +130,6 @@ public class KeyToolTest {
         signedMessage = tmpxupkeytool.signMessage(plainText, "xup-default-test", "xupkeypass");
         System.out.println(signedMessage);
         assertNotNull(signedMessage);
-        assertEquals(344, signedMessage.length());
         assertTrue(walletKeyTool.verifyMessage(plainText,  signedMessage, "xup-default-test"));
     }
 }
